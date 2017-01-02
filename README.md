@@ -1,14 +1,11 @@
 # [Logarithmantic](https://en.wiktionary.org/wiki/logarithmancy) Monte Carlo (LMC)
-
-(not to be confused with the Large Magellanic Cloud)
-
 ## Python code for Markov Chain Monte Carlo
 
 *Logarithmancy* (n): divination by means of algorithms
 
 ### What is this?
 
-`LMC` is a bundle of Python code for performing Markov Chain Monte Carlo, which implements a few different multidimensional proposal strategies and (optionally parallel) adaptation methods. There are similar packages out there, notably [`pymc`](https://github.com/pymc-devs/pymc) - `LMC` exists because I found the alternatives to be too inflexible for the work I was doing at the time. On the off chance that someone else is in the same boat, here it is.
+`LMC` (not to be confused with the Large Magellanic Cloud) is a bundle of Python code for performing Markov Chain Monte Carlo, which implements a few different multidimensional proposal strategies and (optionally parallel) adaptation methods. There are similar packages out there, notably [`pymc`](https://github.com/pymc-devs/pymc) - `LMC` exists because I found the alternatives to be too inflexible for the work I was doing at the time. On the off chance that someone else is in the same boat, here it is.
 
 An abridged description of the package (from the `help` function) is copied here:
 
