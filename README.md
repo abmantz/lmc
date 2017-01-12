@@ -7,6 +7,8 @@
 
 `LMC` (not to be confused with the Large Magellanic Cloud) is a bundle of Python code for performing Markov Chain Monte Carlo, which implements a few different multidimensional proposal strategies and (optionally parallel) adaptation methods. There are similar packages out there, notably [`pymc`](https://github.com/pymc-devs/pymc) - `LMC` exists because I found the alternatives to be too inflexible for the work I was doing at the time. On the off chance that someone else is in the same boat, here it is.
 
+The samplers currently included are Metropolis, slice, and the affine-invariant sampler popularized by [`emcee`](http://dan.iel.fm/emcee) ([Goodman & Weare 2010](http://dx.doi.org/10.2140/camcos.2010.5.65)).
+
 An abridged description of the package (from the `help` function) is copied here:
 
 ```
