@@ -1467,11 +1467,71 @@ chainfile.close()
 # print updater.R
 """
 
+    elif number == 3:
+        print """
+Here I test out LMC on a simple problem: fitting a linear model with Gaussian intrinsic scatter to data (which we'll simulate).
+
+A Jupyter notebook showing (almost) this example with plots and results can be found at
+https://github.com/abmantz/lmc/blob/master/examples/line.ipynb
+
+import numpy as np
+import lmc
+
+# simulate some data
+true_alpha = 25.0
+true_beta = 0.5
+true_sigma = 10.0
+
+xs = 100.0 * np.random.random(20)
+ys = np.random.normal(true_alpha + true_beta*xs, true_sigma)
+
+# Define separate functions for the prior, likelihood
+# and posterior, even though it isn't strictly necessary.
+
+# I'll be lazy and define the parameter objects at global scope.
+# (The actual declarations of alpha, beta and sigma will come later.)
+# In a complex fitting code, this would be very bad practice, but
+# for simple scripts like this it should be fine.
+# Similarly, I will just use the global `xs` and `ys` data.
+# Consequently, these functions do not need arguments!
+
+def lnPrior():
+    if sigma() <= 0.0:
+        return -np.inf
+    # NB "uniform in angle" slope prior as in the example we're following
+    # Jeffreys prior for the scatter
+    return -1.5*np.log(1 + beta()** 2) - np.log(sigma())
+
+def lnLikelihood():
+    ymod = alpha() + beta()*xs
+    return np.sum( -0.5*((ys - ymod) / sigma())**2  - np.log(sigma()) )
+
+# A quirk of LMC is that the log_posterior function must have 1 argument
+# but, given the choices above, we won't actually use it.
+def lnPosterior(junk=None):
+    return lnPrior() + lnLikelihood()
+
+# Here we define Parameter objects for each free parameter, and bundle them
+# into a ParameterSpace that knows about the posterior function.
+# Each Parameter is given a starting value and a guess at the appropriate step size.
+alpha = lmc.Parameter(25.0, 1.0, 'alpha')
+beta = lmc.Parameter(0.5, 0.05, 'beta')
+sigma = lmc.Parameter(10.0, 1.0, 'sigma')
+space = lmc.ParameterSpace([alpha, beta, sigma], lnPosterior)
+
+# Run a few chain and store it in memory.
+# I'll be lazy again and use Vehicle with all default settings.
+v = lmc.Vehicle(space, lmc.dictBackend())
+Nsteps = 10000 # or whatever you want
+v(1, Nsteps)
+"""
+
     else:
         print """
 Usage: example(N), where N is one of:
  1. A very simple example where the posterior is bivariate Gaussian, using the Vehicle wrapper to handle setup.
  2. Same as (1), but with the hood open.
+ 3. Fitting a line plus Gaussian scatter.
 """
 
 
