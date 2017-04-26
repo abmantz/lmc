@@ -57,7 +57,7 @@ Installation
 Automatic
 ---------
 
-If all goes well, you should be able to ``pip install lmc``.
+Install from PyPI by running ``pip install lmc``.
 
 Manual
 ------
