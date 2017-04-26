@@ -11,7 +11,7 @@ Python code for Markov Chain Monte Carlo
 What is this?
 =============
 
-`LMC` (not to be confused with the Large Magellanic Cloud) is a bundle of Python code for performing Markov Chain Monte Carlo, which implements a few different multidimensional proposal strategies and (optionally parallel) adaptation methods. There are similar packages out there, notably `pymc <https://github.com/pymc-devs/pymc>`_ - `LMC` exists because I found the alternatives to be too inflexible for the work I was doing at the time. On the off chance that someone else is in the same boat, here it is.
+``LMC`` (not to be confused with the Large Magellanic Cloud) is a bundle of Python code for performing Markov Chain Monte Carlo, which implements a few different multidimensional proposal strategies and (optionally parallel) adaptation methods. There are similar packages out there, notably `pymc <https://github.com/pymc-devs/pymc>`_ - ``LMC`` exists because I found the alternatives to be too inflexible for the work I was doing at the time. On the off chance that someone else is in the same boat, here it is.
 
 The samplers currently included are Metropolis, slice, and the affine-invariant sampler popularized by `emcee <http://dan.iel.fm/emcee>`_ (`Goodman & Weare 2010 <http://dx.doi.org/10.2140/camcos.2010.5.65>`_).
 
@@ -57,16 +57,16 @@ Installation
 Automatic
 ---------
 
-If all goes well, you should be able to `pip install lmc`.
+If all goes well, you should be able to ``pip install lmc``.
 
 Manual
 ------
 
-Download `lmc/lmc.py` and put it somewhere on your `PYTHONPATH`. You will need to have the `numpy` package installed. The `mpi4py` package is optional, but highly recommended.
+Download ``lmc/lmc.py`` and put it somewhere on your ``PYTHONPATH``. You will need to have the ``numpy`` package installed. The ``mpi4py`` package is optional, but highly recommended.
 
 Usage and Help
 ==============
 
-Documentation can be found throughout `lmc.py`, mostly in the form of docstrings, so it's also available through the Python interpreter. There's also a `help()` function (near the top of the file, if you're browsing) and an `example()` function (near the bottom).
+Documentation can be found throughout ``lmc.py``, mostly in the form of docstrings, so it's also available through the Python interpreter. There's also a ``help()`` function (near the top of the file, if you're browsing) and an ``example()`` function (near the bottom).
 
 The examples can also be browsed `here <https://github.com/abmantz/lmc/tree/master/examples>`_.
