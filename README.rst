@@ -62,7 +62,7 @@ If all goes well, you should be able to `pip install lmc`.
 Manual
 ------
 
-Download `lmc/lmc.py` and put it somewhere on your `PYTHONPATH`. Make sure you have the packages it depends on: `cPickle`, `csv`, `glob`, `numpy`, `struct`, `sys` (most are standard). `mpi4py` is optional, but highly recommended. Import `lmc`. That's it; nothing fancy here.
+Download `lmc/lmc.py` and put it somewhere on your `PYTHONPATH`. You will need to have the `numpy` package installed. The `mpi4py` package is optional, but highly recommended.
 
 Usage and Help
 ==============
