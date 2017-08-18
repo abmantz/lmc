@@ -1,6 +1,12 @@
 .. image:: https://img.shields.io/badge/ascl-1706.005-blue.svg?colorB=262255
    :alt: ascl:1706.005
    :target: http://ascl.net/1706.005
+.. image:: https://img.shields.io/pypi/v/lmc.svg
+   :alt: PyPi
+   :target: https://pypi.python.org/pypi/lmc
+.. image:: https://img.shields.io/pypi/l/lmc.svg
+   :alt: LGPL-3.0
+   :target: https://www.gnu.org/licenses/lgpl-3.0.txt
 =====================================================================================
 Logarithmantic Monte Carlo (LMC)
 =====================================================================================
