@@ -821,7 +821,7 @@ class GoodmanWeareUpdater(Updater):
             if self.comm is not None:
                 self.broadcast(half)
         # set "current" parameter values to one of the walkers (for Backends to write)
-        k = self.count % len(self.space)
+        k = self.count % len(self.nwalkers)
         for j,p in enumerate(self.space):
             p.set(self.ensemble[k,j])
     def broadcast(self, half):
