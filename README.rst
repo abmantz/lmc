@@ -7,6 +7,7 @@
 .. image:: https://img.shields.io/pypi/l/lmc.svg
    :alt: LGPL-3.0
    :target: https://www.gnu.org/licenses/lgpl-3.0.txt
+
 =====================================================================================
 Logarithmantic Monte Carlo (LMC)
 =====================================================================================
