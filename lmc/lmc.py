@@ -5,7 +5,7 @@ Licensed under the  GNU LESSER GENERAL PUBLIC LICENSE
 """
 
 import csv
-import cPickle as pickle
+import pickle
 import glob
 import numpy as np
 import struct
@@ -30,7 +30,7 @@ parallel_filename_ext = '.chk'
 
 
 def help():
-    print """
+    print("""
 The module should be very flexible, but is designed with these things foremost in mind:
   1. use with expensive likelihood calculations which probably have a host of hard-to-modify code associated with them.
   2. making it straightforward to break the parameter space into subspaces which can be sampled using different proposal methods and at different rates. For example, if changing some parameters requires very expensive calulations in the likelihood, the other, faster parameters can be sampled at a higher rate. Or, some parameters may lend themselves to Gibbs sampling, while others may not, and these can be block updated independently.
@@ -84,7 +84,7 @@ See also lmc.example()
 Crude non-MCMC functionality:
 1. ParameterSpace.optimize provides deterministic minimization (using scipy.optimize.fmin_powell) to get an decent initial fit. This is not very efficient.
 2. Updater.set_covariance_from_hessian uses finite differencing to estimate an appropriate cartesian width in each direction. This will fail if the state is not in a local minimum, or just because. (NB commented due to compatibility issues.)
-"""
+""")
 
 
 
@@ -132,7 +132,7 @@ class postgetter:
             chisq = 1e300
         if self.verbose and chisq < self.last:
             self.last = chisq
-            print chisq, x
+            print(chisq, x)
         return chisq
 
 class ParameterSpace(list):
@@ -149,7 +149,7 @@ class ParameterSpace(list):
         return st
     def optimize(self, struct, xtol=0.01, ftol=0.01, maxiter=10):
         if not have_scipy:
-            print "ParameterSpace.optimize requires the scipy package -- aborting."
+            print("ParameterSpace.optimize requires the scipy package -- aborting.")
             return None
         g = postgetter()
         g.verbose = True
@@ -160,7 +160,7 @@ class ParameterSpace(list):
             m = scipy.optimize.fmin_powell(g, origin, full_output=True, xtol=xtol, ftol=ftol, maxiter=maxiter)
             ret = -0.5 * m[1] # log-likelihood for best point
         except:
-            print "ParameterSpace.optimize: warning -- some kind of error in scipy.optimize.fmin_powell."
+            print("ParameterSpace.optimize: warning -- some kind of error in scipy.optimize.fmin_powell.")
             for i, p in enumerate(self):
                 p.set(origin[i])
             ret = None
@@ -205,7 +205,7 @@ class Updater:
         self.restoreBits(s)
         f.close()
     def save(self, filename):
-        f = open(filename, 'w')
+        f = open(filename, 'wb')
         pickle.dump(self.saveBits(), f)
         f.close()
     def set_step(self, step):
@@ -269,7 +269,7 @@ class CartesianUpdater(Updater):
         try:
             self.save(filename)
         except:
-            print "Warning: IO error while writing " + filename + " to store covariance (process " + self.pid + ", updater " + self.uind + ")."
+            print("Warning: IO error while writing " + filename + " to store covariance (process " + self.pid + ", updater " + self.uind + ").")
         total = 0
         moment1 = np.zeros(len(self.space))
         moment2 = np.zeros(len(self.space))
@@ -292,7 +292,7 @@ class CartesianUpdater(Updater):
                 grandVarMean += d / (j+1.0)
                 j += 1
             except:
-                print "Warning: IO error while reading " + filename + " to update covariance (process " + self.pid + ", updater " + self.uind + ")."
+                print("Warning: IO error while reading " + filename + " to update covariance (process " + self.pid + ", updater " + self.uind + ").")
         if j > 1:
             B = self.count / (j - 1.0) * grandMeanVar
             W = grandVarMean / j
@@ -512,7 +512,7 @@ class MultiDimUpdater(Updater):
         try:
             self.save(filename)
         except:
-            print "Warning: IO error while writing " + filename + " to store covariance (process " + self.pid + ", updater " + self.uind + ")."
+            print("Warning: IO error while writing " + filename + " to store covariance (process " + self.pid + ", updater " + self.uind + ").")
         total = 0
         moment1 = np.zeros(len(self.space))
         moment2 = np.zeros( (len(self.space), len(self.space)) )
@@ -535,7 +535,7 @@ class MultiDimUpdater(Updater):
                 grandVarMean += d / (j+1.0)
                 j += 1
             except:
-                print "Warning: IO error while reading " + filename + " to update covariance (process " + self.pid + ", updater " + self.uind + ")."
+                print("Warning: IO error while reading " + filename + " to update covariance (process " + self.pid + ", updater " + self.uind + ").")
         if j > 1:
             B = self.count / (j - 1.0) * grandMeanVar
             W = grandVarMean / j
@@ -609,7 +609,7 @@ class MultiDimUpdater(Updater):
             self.widths = [self.rescale*np.sqrt(abs(v)) for v in evals]
             return True
         except np.linalg.LinAlgError:
-            print "MultiDimUpdater.set_covariance: warning -- aborting due to covariance diagonalization failure"
+            print("MultiDimUpdater.set_covariance: warning -- aborting due to covariance diagonalization failure")
             return False
     def set_covariance_from_hessian(self, struct, h=0.1):
         ok = True
@@ -893,7 +893,7 @@ class TableUpdater(Updater):
             self.j = self.last
         else:
             self.j = np.random.random_integers(self.nchoices) - 1
-        for n,pp in self.pdict.iteritems():
+        for (n,pp) in self.pdict.items():
             pp[1].set( self.table[self.j][pp[0]] )
     def restoreBits(self, s):
         self.count = s['count']
@@ -948,45 +948,45 @@ class Slice(Step):
         L = -self.width_fac * np.random.random_sample()                # left edge of the slice
         R = L + self.width_fac                                         # right edge
         if self.obnoxious:
-            print 'Slice: starting params:', [p() for p in self.updater.space]
-            print 'Slice: current level', self.updater.engine.current_logP, '; seeking', z
-            print 'Slice: stepping out left'
+            print('Slice: starting params:', [p() for p in self.updater.space])
+            print('Slice: current level', self.updater.engine.current_logP, '; seeking', z)
+            print('Slice: stepping out left')
         for i in range(self.maxiter):
             self.updater.move(L)
             lnew = self.updater.space.log_posterior(struct)
             if self.obnoxious:
-                print 'Slice: params:', [p() for p in self.updater.space]
-                print 'Slice:', L, lnew
+                print('Slice: params:', [p() for p in self.updater.space])
+                print('Slice:', L, lnew)
             if lnew <= z:
                 break
             L -= self.width_fac;
         else:
             if not self.quiet:
-                print "Slice(): warning -- exhausted stepping out (left) loop"
+                print("Slice(): warning -- exhausted stepping out (left) loop")
         if self.obnoxious:
-            print 'Slice: params:', [p() for p in self.updater.space]
-            print 'Slice: stepping out right'
+            print('Slice: params:', [p() for p in self.updater.space])
+            print('Slice: stepping out right')
         for i in range(self.maxiter):
             self.updater.move(R)
             lnew = self.updater.space.log_posterior(struct)
             if self.obnoxious:
-                print 'Slice: params:', [p() for p in self.updater.space]
-                print 'Slice:', R, lnew
+                print('Slice: params:', [p() for p in self.updater.space])
+                print('Slice:', R, lnew)
             if lnew <= z:
                 break
             R += self.width_fac;
         else:
             if not self.quiet:
-                print "Slice(): warning -- exhausted stepping out (right) loop"
+                print("Slice(): warning -- exhausted stepping out (right) loop")
         if self.obnoxious:
-            print 'Slice: stepping in'
+            print('Slice: stepping in')
         for i in range(self.maxiter):
             x1 = L + (R - L) *  np.random.random_sample()
             self.updater.move(x1)
             self.updater.engine.current_logP = self.updater.space.log_posterior(struct)
             if self.obnoxious:
-                print 'Slice: params:', [p() for p in self.updater.space]
-                print 'Slice:', x1, self.updater.engine.current_logP
+                print('Slice: params:', [p() for p in self.updater.space])
+                print('Slice:', x1, self.updater.engine.current_logP)
             if self.updater.engine.current_logP < z:
                 if x1 < 0:
                     L = x1
@@ -996,9 +996,9 @@ class Slice(Step):
                 break
         else:
             if not self.quiet:
-                print "Slice(): warning -- exhausted stepping in loop"
+                print("Slice(): warning -- exhausted stepping in loop")
         if self.obnoxious:
-            print 'Slice: completed'
+            print('Slice: completed')
 
 class Metropolis(Step):
     """
@@ -1127,7 +1127,7 @@ class textBackend(Backend):
                         d[key].append(values[i])
                 except ValueError:
                     if not quiet:
-                        print "textBackend.readToDict: ignoring line " + line
+                        print("textBackend.readToDict: ignoring line " + line)
         f.close()
         return d
 
@@ -1251,7 +1251,7 @@ class Engine(list):
                     for backend in backends:
                         backend(self.space)
         except KeyboardInterrupt:
-            print "Interrupted by keyboard with count = " + str(self.count)
+            print("Interrupted by keyboard with count = " + str(self.count))
     def append(self, v):
         list.append(self, v)
         self.register_updater(v, len(self))
@@ -1308,7 +1308,7 @@ class Vehicle:
         self.checkpoint = checkpoint
         try:
             self.updater.restore(checkpoint)
-            print 'Loaded checkpoint', checkpoint
+            print('Loaded checkpoint', checkpoint)
         except:
             pass
         # TODO: get last position from backend. This requires some specialization both for the backend type and the updater type, however.
@@ -1344,7 +1344,7 @@ class Vehicle:
             else:
                 R = max(self.updater.R)
             if R is not None:
-                print 'max R =', R
+                print('max R =', R)
                 if R < R_target:
                     break
             self.engine(R_check_interval, struct, [self.backend])
@@ -1356,7 +1356,7 @@ class Vehicle:
 
 def example(number=None):
     if number == 1:
-        print """
+        print("""
 # Here is a simple example. As shown it will run in non-parallel mode; comments indicate what to do for parallelization.
 
 from lmc import *
@@ -1396,10 +1396,10 @@ v(100, 10000, thing)
 #v = Vehicle(ParameterSpace([x,y], post), backend=textBackend(open("chain"+str(mpi_rank+1)+".txt",'a')), parallel=mpi_comm, checkpoint="chain"+str(mpi_rank+1)+".chk")
 ## In this case, convergence will be tested periodically, and the chains are allowed to terminate any time after the first 501 iterations if a default convergence criterion is satisfied.
 #v(501, 10000, thing)
-"""
+""")
 
     elif number == 2:
-        print """
+        print("""
 # Here is a simple example. As shown it will run in non-parallel mode; comments indicate what to do for parallelization.
 
 from lmc import *
@@ -1465,10 +1465,10 @@ chainfile.close()
 
 ## If this was a parallel run, print the convergence criterion for each parameter.
 # print updater.R
-"""
+""")
 
     elif number == 3:
-        print """
+        print("""
 Here I test out LMC on a simple problem: fitting a linear model with Gaussian intrinsic scatter to data (which we'll simulate).
 
 A Jupyter notebook showing (almost) this example with plots and results can be found at
@@ -1524,15 +1524,15 @@ space = lmc.ParameterSpace([alpha, beta, sigma], lnPosterior)
 v = lmc.Vehicle(space, lmc.dictBackend())
 Nsteps = 10000 # or whatever you want
 v(1, Nsteps)
-"""
+""")
 
     else:
-        print """
+        print("""
 Usage: example(N), where N is one of:
  1. A very simple example where the posterior is bivariate Gaussian, using the Vehicle wrapper to handle setup.
  2. Same as (1), but with the hood open.
  3. Fitting a line plus Gaussian scatter.
-"""
+""")
 
 
 
