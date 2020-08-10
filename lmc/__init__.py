@@ -1,1 +1,1 @@
-from lmc import *
+from .lmc import *
