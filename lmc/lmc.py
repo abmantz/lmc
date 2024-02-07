@@ -1034,7 +1034,7 @@ class randNormalExp:
     def __init__(self, ratio=0.333333333):
         self.ratio = ratio
     def __call__(self):
-        r = np.random.randn()
+        r = np.random.rand()
         if r <= self.ratio:
             if r < 0.5*self.ratio:
                 return np.random.exponential()
@@ -1054,7 +1054,7 @@ class randChiExp:
         self.ratio = ratio
         self.dof = 2
     def __call__(self):
-        r = np.random.randn()
+        r = np.random.rand()
         if r <= self.ratio:
             if r < 0.5*self.ratio:
                 return np.random.exponential()
